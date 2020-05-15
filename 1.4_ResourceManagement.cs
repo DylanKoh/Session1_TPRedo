@@ -50,139 +50,231 @@ namespace Session1_TPRedo
 
         private void LoadDGV()
         {
+            dataGridView1.Rows.Clear();
             using (var context = new Session1Entities())
             {
-                var getResources = (from x in context.Resources
-                                    orderby x.remainingQuantity descending
-                                    select x);
-                foreach (var Resources in getResources)
+                if ((cbSkill.SelectedItem == null || cbSkill.SelectedItem.ToString() == "All") && (cbType.SelectedItem == null || cbType.SelectedItem.ToString() == "All"))
                 {
-                    var newRow = new List<string>()
+
+
+                    var getResources = (from x in context.Resources
+                                        orderby x.remainingQuantity descending
+                                        select x);
+                    foreach (var Resources in getResources)
                     {
+                        var newRow = new List<string>()
+                        {
                         Resources.resId.ToString(), Resources.resName, Resources.Resource_Type.resTypeName,
                         context.Resource_Allocation.Where(x => x.resIdFK == Resources.resId).Select(x => x).Count().ToString()
-                    };
-                    var getAllocation = (from x in context.Resource_Allocation
-                                         where x.resIdFK == Resources.resId
-                                         select x);
-                    string allocationString = "Nil";
-                    foreach (var skill in getAllocation)
-                    {
-                        if (allocationString == "Nil")
+                        };
+                        var getAllocation = (from x in context.Resource_Allocation
+                                             where x.resIdFK == Resources.resId
+                                             select x);
+                        string allocationString = "Nil";
+                        foreach (var skill in getAllocation)
                         {
-                            allocationString = skill.Skill.skillName;
+                            if (allocationString == "Nil")
+                            {
+                                allocationString = skill.Skill.skillName;
+                            }
+                            else
+                            {
+                                allocationString += $", {skill.Skill.skillName}";
+                            }
+                        }
+                        newRow.Add(allocationString);
+
+                        if (Resources.remainingQuantity > 5)
+                        {
+                            newRow.Add("Sufficient");
+                        }
+                        else if (Resources.remainingQuantity <= 5 && Resources.remainingQuantity >= 1)
+                        {
+                            newRow.Add("Low Stock");
                         }
                         else
                         {
-                            allocationString += $", {skill.Skill.skillName}";
+                            newRow.Add("Not Available");
+                        }
+                        dataGridView1.Rows.Add(newRow.ToArray());
+                    }
+                }
+                else
+                {
+                    if ((cbType.SelectedItem == null || cbType.SelectedItem.ToString() == "All") && cbSkill.SelectedItem.ToString() != "All")
+                    {
+                        var getResources = (from x in context.Resources
+                                            orderby x.remainingQuantity descending
+                                            select x);
+                        foreach (var Resources in getResources)
+                        {
+                            var getAllocationCheck = (from x in context.Resource_Allocation
+                                                      where x.resIdFK == Resources.resId && x.Skill.skillName.Contains(cbSkill.SelectedItem.ToString())
+                                                      select x).FirstOrDefault();
+                            if (getAllocationCheck == null)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                var newRow = new List<string>()
+                                {
+                                    Resources.resId.ToString(), Resources.resName, Resources.Resource_Type.resTypeName,
+                                    context.Resource_Allocation.Where(x => x.resIdFK == Resources.resId).Select(x => x).Count().ToString()
+                                };
+                                var getAllocation = (from x in context.Resource_Allocation
+                                                     where x.resIdFK == Resources.resId
+                                                     select x);
+                                string allocationString = "Nil";
+                                foreach (var skill in getAllocation)
+                                {
+                                    if (allocationString == "Nil")
+                                    {
+                                        allocationString = skill.Skill.skillName;
+                                    }
+                                    else
+                                    {
+                                        allocationString += $", {skill.Skill.skillName}";
+                                    }
+                                }
+                                newRow.Add(allocationString);
+
+                                if (Resources.remainingQuantity > 5)
+                                {
+                                    newRow.Add("Sufficient");
+                                }
+                                else if (Resources.remainingQuantity <= 5 && Resources.remainingQuantity >= 1)
+                                {
+                                    newRow.Add("Low Stock");
+                                }
+                                else
+                                {
+                                    newRow.Add("Not Available");
+                                }
+                                dataGridView1.Rows.Add(newRow.ToArray());
+                            }
+
                         }
                     }
-                    newRow.Add(allocationString);
+                    else if ((cbSkill.SelectedItem == null || cbSkill.SelectedItem.ToString() == "All") && cbType.SelectedItem.ToString() != "All")
+                    {
+                        var getResources = (from x in context.Resources
+                                            where x.Resource_Type.resTypeName == cbType.SelectedItem.ToString()
+                                            orderby x.remainingQuantity descending
+                                            select x);
+                        foreach (var Resources in getResources)
+                        {
+                            var newRow = new List<string>()
+                            {
+                                Resources.resId.ToString(), Resources.resName, Resources.Resource_Type.resTypeName,
+                                context.Resource_Allocation.Where(x => x.resIdFK == Resources.resId).Select(x => x).Count().ToString()
+                            };
+                            var getAllocation = (from x in context.Resource_Allocation
+                                                 where x.resIdFK == Resources.resId
+                                                 select x);
+                            string allocationString = "Nil";
+                            foreach (var skill in getAllocation)
+                            {
+                                if (allocationString == "Nil")
+                                {
+                                    allocationString = skill.Skill.skillName;
+                                }
+                                else
+                                {
+                                    allocationString += $", {skill.Skill.skillName}";
+                                }
+                            }
+                            newRow.Add(allocationString);
 
-                    if (Resources.remainingQuantity > 5)
-                    {
-                        newRow.Add("Sufficient");
+                            if (Resources.remainingQuantity > 5)
+                            {
+                                newRow.Add("Sufficient");
+                            }
+                            else if (Resources.remainingQuantity <= 5 && Resources.remainingQuantity >= 1)
+                            {
+                                newRow.Add("Low Stock");
+                            }
+                            else
+                            {
+                                newRow.Add("Not Available");
+                            }
+                            dataGridView1.Rows.Add(newRow.ToArray());
+                        }
                     }
-                    else if (Resources.remainingQuantity <= 5 && Resources.remainingQuantity >= 1)
+                    else if (cbSkill.SelectedItem.ToString() != "All" && cbType.SelectedItem.ToString() != "All")
                     {
-                        newRow.Add("Low Stock");
+                        var getResources = (from x in context.Resources
+                                            where x.Resource_Type.resTypeName == cbType.SelectedItem.ToString()
+                                            orderby x.remainingQuantity descending
+                                            select x);
+                        foreach (var Resources in getResources)
+                        {
+                            var getAllocationCheck = (from x in context.Resource_Allocation
+                                                      where x.resIdFK == Resources.resId && x.Skill.skillName.Contains(cbSkill.SelectedItem.ToString())
+                                                      select x).FirstOrDefault();
+                            if (getAllocationCheck == null)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                var newRow = new List<string>()
+                            {
+                                Resources.resId.ToString(), Resources.resName, Resources.Resource_Type.resTypeName,
+                                context.Resource_Allocation.Where(x => x.resIdFK == Resources.resId).Select(x => x).Count().ToString()
+                            };
+                                var getAllocation = (from x in context.Resource_Allocation
+                                                     where x.resIdFK == Resources.resId
+                                                     select x);
+                                string allocationString = "Nil";
+                                foreach (var skill in getAllocation)
+                                {
+                                    if (allocationString == "Nil")
+                                    {
+                                        allocationString = skill.Skill.skillName;
+                                    }
+                                    else
+                                    {
+                                        allocationString += $", {skill.Skill.skillName}";
+                                    }
+                                }
+                                newRow.Add(allocationString);
+
+                                if (Resources.remainingQuantity > 5)
+                                {
+                                    newRow.Add("Sufficient");
+                                }
+                                else if (Resources.remainingQuantity <= 5 && Resources.remainingQuantity >= 1)
+                                {
+                                    newRow.Add("Low Stock");
+                                }
+                                else
+                                {
+                                    newRow.Add("Not Available");
+                                }
+                                dataGridView1.Rows.Add(newRow.ToArray());
+                            }
+                        }
                     }
-                    else
-                    {
-                        newRow.Add("Not Available");
-                    }
-                    dataGridView1.Rows.Add(newRow.ToArray());
                 }
-            }
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                if (dataGridView1.Rows[row.Index].Cells[5].Value.ToString() == "Not Available")
+                foreach (DataGridViewRow row in dataGridView1.Rows)
                 {
-                    dataGridView1.Rows[row.Index].DefaultCellStyle.BackColor = Color.Red;
+                    if (dataGridView1.Rows[row.Index].Cells[5].Value.ToString() == "Not Available")
+                    {
+                        dataGridView1.Rows[row.Index].DefaultCellStyle.BackColor = Color.Red;
+                    }
                 }
             }
         }
 
         private void cbType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbType.SelectedItem.ToString() != "All" && (cbSkill.SelectedItem == null || cbSkill.SelectedItem.ToString() == "All"))
-            {
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    if (dataGridView1.Rows[row.Index].Cells[2].Value.ToString() != cbType.SelectedItem.ToString())
-                    {
-                        dataGridView1.Rows.RemoveAt(row.Index);
-                    }
-                }
-            }
-            else if (cbType.SelectedItem.ToString() != "All" && (cbSkill.SelectedItem == null || cbSkill.SelectedItem.ToString() != "All"))
-            {
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    if (dataGridView1.Rows[row.Index].Cells[2].Value.ToString() != cbType.SelectedItem.ToString() || !dataGridView1.Rows[row.Index].Cells[4].Value.ToString().Contains(cbType.SelectedItem.ToString()))
-                    {
-                        dataGridView1.Rows.RemoveAt(row.Index);
-                    }
-                }
-            }
-            else if (cbType.SelectedItem.ToString() == "All" && (cbSkill.SelectedItem == null || cbSkill.SelectedItem.ToString() != "All"))
-            {
-                dataGridView1.Rows.Clear();
-                LoadDGV();
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    if (!dataGridView1.Rows[row.Index].Cells[4].Value.ToString().Contains(cbType.SelectedItem.ToString()))
-                    {
-                        dataGridView1.Rows.RemoveAt(row.Index);
-                    }
-                }
-            }
-            else
-            {
-                dataGridView1.Rows.Clear();
-                LoadDGV();
-            }
+            LoadDGV();
         }
 
         private void cbSkill_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cbSkill.SelectedItem.ToString() != "All" && (cbType.SelectedItem == null || cbType.SelectedItem.ToString() == "All"))
-            {
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    if (!dataGridView1.Rows[row.Index].Cells[4].Value.ToString().Contains(cbType.SelectedItem.ToString()))
-                    {
-                        dataGridView1.Rows.RemoveAt(row.Index);
-                    }
-                }
-            }
-            else if (cbSkill.SelectedItem.ToString() != "All" && (cbType.SelectedItem == null || cbType.SelectedItem.ToString() != "All"))
-            {
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    if (dataGridView1.Rows[row.Index].Cells[2].Value.ToString() != cbType.SelectedItem.ToString() || !dataGridView1.Rows[row.Index].Cells[4].Value.ToString().Contains(cbType.SelectedItem.ToString()))
-                    {
-                        dataGridView1.Rows.RemoveAt(row.Index);
-                    }
-                }
-            }
-            else if (cbSkill.SelectedItem.ToString() == "All" && (cbType.SelectedItem == null || cbType.SelectedItem.ToString() != "All"))
-            {
-                dataGridView1.Rows.Clear();
-                LoadDGV();
-                foreach (DataGridViewRow row in dataGridView1.Rows)
-                {
-                    if (dataGridView1.Rows[row.Index].Cells[2].Value.ToString() != cbType.SelectedItem.ToString())
-                    {
-                        dataGridView1.Rows.RemoveAt(row.Index);
-                    }
-                }
-            }
-            else
-            {
-                dataGridView1.Rows.Clear();
-                LoadDGV();
-            }
+            LoadDGV();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -240,7 +332,7 @@ namespace Session1_TPRedo
                 (new UpdateResource(getResourceID)).ShowDialog();
                 this.Close();
             }
-            
+
         }
     }
 }
