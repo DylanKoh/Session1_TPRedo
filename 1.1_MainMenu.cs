@@ -16,5 +16,15 @@ namespace Session1_TPRedo
         {
             InitializeComponent();
         }
+
+        private void btnCreate_Click(object sender, EventArgs e)
+        {
+            (new RMAccountCreation()).ShowDialog();
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
