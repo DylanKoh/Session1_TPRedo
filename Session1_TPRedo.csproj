@@ -61,16 +61,22 @@
     <Compile Include="1.1_MainMenu.Designer.cs">
       <DependentUpon>1.1_MainMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="1.5_AddNewResource.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="1.5_AddNewResource.Designer.cs">
+      <DependentUpon>1.5_AddNewResource.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource.cs">
       <DependentUpon>Session1Model.tt</DependentUpon>
     </Compile>
-    <Compile Include="ResourceManagement.cs">
+    <Compile Include="1.4_ResourceManagement.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ResourceManagement.Designer.cs">
-      <DependentUpon>ResourceManagement.cs</DependentUpon>
+    <Compile Include="1.4_ResourceManagement.Designer.cs">
+      <DependentUpon>1.4_ResourceManagement.cs</DependentUpon>
     </Compile>
     <Compile Include="Resource_Allocation.cs">
       <DependentUpon>Session1Model.tt</DependentUpon>
@@ -108,6 +114,12 @@
     <Compile Include="Skill.cs">
       <DependentUpon>Session1Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="1.6_UpdateResource.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="1.6_UpdateResource.Designer.cs">
+      <DependentUpon>1.6_UpdateResource.cs</DependentUpon>
+    </Compile>
     <Compile Include="User.cs">
       <DependentUpon>Session1Model.tt</DependentUpon>
     </Compile>
@@ -116,6 +128,9 @@
     </Compile>
     <EmbeddedResource Include="1.1_MainMenu.resx">
       <DependentUpon>1.1_MainMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="1.5_AddNewResource.resx">
+      <DependentUpon>1.5_AddNewResource.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -129,11 +144,14 @@
     <EmbeddedResource Include="1.2_RMAccountCreation.resx">
       <DependentUpon>1.2_RMAccountCreation.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ResourceManagement.resx">
-      <DependentUpon>ResourceManagement.cs</DependentUpon>
+    <EmbeddedResource Include="1.4_ResourceManagement.resx">
+      <DependentUpon>1.4_ResourceManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="1.3_RMLogin.resx">
       <DependentUpon>1.3_RMLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="1.6_UpdateResource.resx">
+      <DependentUpon>1.6_UpdateResource.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
