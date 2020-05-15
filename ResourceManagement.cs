@@ -10,19 +10,14 @@ using System.Windows.Forms;
 
 namespace Session1_TPRedo
 {
-    public partial class MainMenu : Form
+    public partial class ResourceManagement : Form
     {
-        public MainMenu()
+        public ResourceManagement()
         {
             InitializeComponent();
         }
 
-        private void btnCreate_Click(object sender, EventArgs e)
-        {
-            (new RMAccountCreation()).ShowDialog();
-        }
-
-        private void btnLogin_Click(object sender, EventArgs e)
+        private void btnBack_Click(object sender, EventArgs e)
         {
             this.Hide();
             (new RMLogin()).ShowDialog();

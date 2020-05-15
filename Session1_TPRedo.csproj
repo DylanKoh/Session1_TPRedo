@@ -66,6 +66,12 @@
     <Compile Include="Resource.cs">
       <DependentUpon>Session1Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="ResourceManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ResourceManagement.Designer.cs">
+      <DependentUpon>ResourceManagement.cs</DependentUpon>
+    </Compile>
     <Compile Include="Resource_Allocation.cs">
       <DependentUpon>Session1Model.tt</DependentUpon>
     </Compile>
@@ -77,6 +83,12 @@
     </Compile>
     <Compile Include="1.2_RMAccountCreation.Designer.cs">
       <DependentUpon>1.2_RMAccountCreation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="1.3_RMLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="1.3_RMLogin.Designer.cs">
+      <DependentUpon>1.3_RMLogin.cs</DependentUpon>
     </Compile>
     <Compile Include="Session1Model.Context.cs">
       <AutoGen>True</AutoGen>
@@ -116,6 +128,12 @@
     </Compile>
     <EmbeddedResource Include="1.2_RMAccountCreation.resx">
       <DependentUpon>1.2_RMAccountCreation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResourceManagement.resx">
+      <DependentUpon>ResourceManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="1.3_RMLogin.resx">
+      <DependentUpon>1.3_RMLogin.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

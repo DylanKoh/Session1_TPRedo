@@ -69,5 +69,10 @@ namespace Session1_TPRedo
             }
 
         }
+
+        private void btnBack_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
